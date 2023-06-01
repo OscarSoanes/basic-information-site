@@ -21,6 +21,6 @@ function getViewFromURL (path) {
     case "/contact": return "views/contact.html";
     case "/about": return "views/about.html";
     case "/favicon.ico": return;
-    default: return;
+    default: return "views/404.html";
   }
 }
