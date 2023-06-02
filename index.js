@@ -1,26 +1,46 @@
-const http = require("http");
-const URL = require("url");
-const fs = require("fs");
+const express = require("express");
+const app = express();
+const port = 3000;
 
-http.createServer((req, res) => {
-  const path = req.url
-  const view = getViewFromURL(path);
+const fs = require("fs")
 
-  fs.readFile(view, (err, dat) => {
+
+app.get("/", (req, res) => {
+  fs.readFile("views/index.html", (err, dat) => {
     if (err) throw err;
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.write(dat);
-    return res.end;
+    res.end();
+  });
+})
 
-  })
-}).listen(8080)
+app.get("/contact", (req, res) => {
+  fs.readFile("views/contact.html", (err, dat) => {
+    if (err) throw err;
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.write(dat);
+    res.end();
+  });
+})
 
-function getViewFromURL (path) {
-  switch (path) {
-    case "/": return "views/index.html";
-    case "/contact": return "views/contact.html";
-    case "/about": return "views/about.html";
-    case "/favicon.ico": return;
-    default: return "views/404.html";
-  }
-}
+app.get("/about", (req, res) => {
+  fs.readFile("views/about.html", (err, dat) => {
+    if (err) throw err;
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.write(dat);
+    res.end();
+  });
+})
+
+app.get("*", (req, res) => {
+  fs.readFile("views/404.html", (err, dat) => {
+    if (err) throw err;
+    res.writeHead(404, {'Content-Type': 'text/html'});
+    res.write(dat);
+    res.end();
+  });
+})
+
+app.listen(port, () => {
+  console.log(`Running express on port ${port}.`)
+})
